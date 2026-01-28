@@ -9,44 +9,66 @@ export default function Auth() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const login = async () => {
+  async function login(e) {
+    e.preventDefault();
+    if (loading) return;
+
     try {
+      setLoading(true);
+      setError("");
       await signInWithEmailAndPassword(auth, email, password);
     } catch (err) {
       setError(err.message);
+    } finally {
+      setLoading(false);
     }
-  };
+  }
 
-  const signup = async () => {
+  async function signup() {
+    if (loading) return;
+
     try {
+      setLoading(true);
+      setError("");
       await createUserWithEmailAndPassword(auth, email, password);
     } catch (err) {
       setError(err.message);
+    } finally {
+      setLoading(false);
     }
-  };
+  }
 
   return (
-    <div className="auth">
+    <form className="auth" onSubmit={login}>
       <h2>Login</h2>
 
       <input
+        type="email"
         placeholder="Email"
         value={email}
         onChange={e => setEmail(e.target.value)}
+        required
       />
 
       <input
-        placeholder="Password"
         type="password"
+        placeholder="Password"
         value={password}
         onChange={e => setPassword(e.target.value)}
+        required
       />
 
-      <button onClick={login}>Login</button>
-      <button onClick={signup}>Sign up</button>
+      <button type="submit" disabled={loading}>
+        Login
+      </button>
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
-    </div>
+      <button type="button" onClick={signup} disabled={loading}>
+        Sign up
+      </button>
+
+      {error && <p className="error">{error}</p>}
+    </form>
   );
 }

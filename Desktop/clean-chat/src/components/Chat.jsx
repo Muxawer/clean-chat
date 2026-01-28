@@ -6,15 +6,13 @@ import "../styles/chat.css";
 export default function Chat({ messages, onSend, onProfile }) {
   const [text, setText] = useState("");
 
-  function handleSend(e) {
-  e.preventDefault();
-  console.log("SUBMIT FIRED", text);
+  async function handleSend(e) {
+    e.preventDefault();
+    if (!text.trim()) return;
 
-  if (!text.trim()) return;
-
-  onSend(text);
-  setText("");
-}
+    await onSend(text);
+    setText("");
+  }
 
   return (
     <div className="chat-container">

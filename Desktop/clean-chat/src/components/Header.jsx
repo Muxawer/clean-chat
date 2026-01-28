@@ -6,7 +6,7 @@ export default function Header({ onProfile }) {
 
   return (
     <header className="header">
-      <h1>Clean Chat</h1>
+      <h3>World chat</h3>
 
       <div className="header-right">
         <span>{user?.email}</span>
